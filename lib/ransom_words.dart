@@ -23,7 +23,7 @@ class _RansomWordsState extends State<RansomWords> {
   Set<WordPair> _saved = <WordPair>{};
   final _biggerFont = const TextStyle(fontSize: 18);
   final SnappingSheetController snappingSheetController = SnappingSheetController();
-  var _image = null;
+  var _image = "https://firebasestorage.googleapis.com/v0/b/hellome-66cf9.appspot.com/o/default.png?alt=media&token=7096d5a8-4a0a-4067-a432-28aac55b8832";
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +42,11 @@ class _RansomWordsState extends State<RansomWords> {
                     const SnackBar(content: Text("Successfully logged out")));
                     }
                     , icon: const Icon(Icons.exit_to_app))
-                    : IconButton(onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const LoginScreen())
-                ),
+                    : IconButton(onPressed: () {
+                      _image = "https://firebasestorage.googleapis.com/v0/b/hellome-66cf9.appspot.com/o/default.png?alt=media&token=7096d5a8-4a0a-4067-a432-28aac55b8832";
+                      Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const LoginScreen()));
+                    },
                     icon: const Icon(Icons.login))
               ],
             ),
@@ -65,11 +67,13 @@ class _RansomWordsState extends State<RansomWords> {
                         const SizedBox(width: 40,),
                         FutureBuilder(
                           future: _getImageFromDB(authFirebaseProvider),
-                          builder: (context, _) => CircleAvatar(
-                            child: ClipRRect(
-                              child: _image == null ? null : Image.network(_image),
+                          builder: (context, _) => Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(image: NetworkImage(_image), fit: BoxFit.fill),
                             ),
-                            radius: 35,
                           ),
                         ),
                         const SizedBox(width: 80),
@@ -245,6 +249,9 @@ class _RansomWordsState extends State<RansomWords> {
 
   Future _getImageFromDB(AuthFirebase authFirebaseProvider) async{
     _image = (await authFirebaseProvider.getImage());
+    print("************");
+    print(_image);
+    print("************");
   }
 
 
